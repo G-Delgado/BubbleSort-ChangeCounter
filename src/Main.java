@@ -1,20 +1,22 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.math.BigDecimal;
+import java.io.PrintWriter;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.Locale;
 
 public class Main {
+	
+	private ArrayList<double[]> cases;
 
 	public Main() {
-
+		cases = new ArrayList<double[]>();
 	}
 
 	public static void main(String args[]) {
@@ -32,8 +34,9 @@ public class Main {
 
 	public void executeProgram(BufferedReader br, BufferedWriter bw) {
 		double avg = 0;
+		String result = "";
 		try {
-			ArrayList<double[]> cases = new ArrayList<double[]>();
+			
 			int n = Integer.parseInt(br.readLine());
 			for (int c = 0; c < n; c++) {
 				String[] first = br.readLine().split(" ");
@@ -44,17 +47,33 @@ public class Main {
 				avg = bubbleSort(numbers.length, numbers);
 				//System.out.println(c + " Cambios: " + avg);
 				cases.add(numbers);
-				bw.write("---------------------------------------\n");
 				//bw.write(avg + "-" + Arrays.toString(cases.get(c)) + "\n");
 				//avg = truncateDecimal(avg, 2);
-				String result = new DecimalFormat("#.##").format(avg) + "-";
+
+				DecimalFormatSymbols symb = new DecimalFormatSymbols(Locale.ENGLISH);
+				symb.setDecimalSeparator('.');
+				DecimalFormat df = new DecimalFormat("#.##", symb);
+				df.setRoundingMode(RoundingMode.DOWN);
+				result += /*new DecimalFormat("#.##").format(avg)*/df.format(avg) + "-";
 				for (int i = 0; i < cases.get(c).length; i++) {
-					result += cases.get(c)[i] + " ";
+					if (i == cases.get(c).length - 1) {
+						result += cases.get(c)[i];
+					} else {						
+						result += cases.get(c)[i] + " ";
+					}
 				}
 				result += "\n";
-				bw.write(result);
-				bw.flush();
 			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			writeFile(result);
+			bw.write("------------------------------------------------------------------------------\n\n");
+			bw.write(result);
+			bw.flush();
 			
 			
 		} catch (IOException e) {
@@ -62,12 +81,18 @@ public class Main {
 		}
 	}
 	
-	public static BigDecimal truncateDecimal(double x, int numberOfDecimals) {
-		if (x > 0) {
-			return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_FLOOR);
-		} else {
-			return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_CEILING);
+	public void writeFile(String data) {
+		PrintWriter pw;
+		try {
+			pw = new PrintWriter("data/data.txt");
+			pw.println(data);
+			pw.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+
 	}
 
 	public static double bubbleSort(int n, double[] arr) {
