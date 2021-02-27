@@ -63,7 +63,8 @@ public class Main {
 					}
 				}
 				result += "\n";
-			}
+			} 
+			br.close();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
