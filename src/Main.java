@@ -33,7 +33,6 @@ public class Main {
 	}
 
 	public void executeProgram(BufferedReader br, BufferedWriter bw) {
-		double avg = 0;
 		String result = "";
 		try {
 			
@@ -44,17 +43,18 @@ public class Main {
 				for (int i = 0; i < first.length; i++) {
 					numbers[i] = Double.parseDouble(first[i]);
 				}
-				avg = bubbleSort(numbers.length, numbers);
-				//System.out.println(c + " Cambios: " + avg);
+				double avg = bubbleSort(numbers.length, numbers);
 				cases.add(numbers);
-				//bw.write(avg + "-" + Arrays.toString(cases.get(c)) + "\n");
-				//avg = truncateDecimal(avg, 2);
-
+				
+				avg = (float) avg / 1.0;
+				
 				DecimalFormatSymbols symb = new DecimalFormatSymbols(Locale.ENGLISH);
 				symb.setDecimalSeparator('.');
 				DecimalFormat df = new DecimalFormat("#.##", symb);
 				df.setRoundingMode(RoundingMode.DOWN);
-				result += /*new DecimalFormat("#.##").format(avg)*/df.format(avg) + "-";
+				
+				result += df.format(avg) + "-";
+				
 				for (int i = 0; i < cases.get(c).length; i++) {
 					if (i == cases.get(c).length - 1) {
 						result += cases.get(c)[i];
@@ -67,7 +67,6 @@ public class Main {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			writeFile(result);
@@ -88,7 +87,6 @@ public class Main {
 			pw.println(data);
 			pw.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -99,7 +97,7 @@ public class Main {
 		int changes =  1;
 		double times = 0;
 		double avg = 0;
-		for (int i = 0; i < n /*&& /*changes > 0*/ ; i++) {
+		for (int i = 0; i < n; i++) {
 			changes = 0;
 			for (int j = 1; j < (n-i); j++) {
 				if (arr[j-1] > arr[j]) {
@@ -109,16 +107,13 @@ public class Main {
 					changes++;
 				}
 			}
-			/*System.out.println(Arrays.toString(arr));*/
 			times++;
-			//System.out.println("Changes: " + changes + " Pasada: " + i);
 			if (changes > 0) {
 				avg += changes;
 			}
 			
 		}
 		times -= 1;
-		//System.out.println(" Times: " + times + " Changes: " + avg + "\n Result:" + (avg/times));
 		return avg/times;
 	}
 }
