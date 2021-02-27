@@ -27,7 +27,7 @@ public class Main {
 		try {
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Couldn't close :c");
 			e.printStackTrace();
 		}
 	}
@@ -46,11 +46,11 @@ public class Main {
 				double avg = bubbleSort(numbers.length, numbers);
 				cases.add(numbers);
 				
-				avg = (float) avg / 1.0;
 				
 				DecimalFormatSymbols symb = new DecimalFormatSymbols(Locale.ENGLISH);
 				symb.setDecimalSeparator('.');
 				DecimalFormat df = new DecimalFormat("#.##", symb);
+				df.setMinimumFractionDigits(1);
 				df.setRoundingMode(RoundingMode.DOWN);
 				
 				result += df.format(avg) + "-";
